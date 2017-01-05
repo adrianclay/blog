@@ -34,7 +34,7 @@ We tested this claim, using prefix and suffix padding, and failed to find the pa
 
 The black box investigation of the behaviour wasn’t proving successful, so I decided to look inside the PHP interpreter source code to find out what was really happening.
 
-``` php_mcrypt_do_crypt ``` is where the validation of the IV happens. If you like reading C code, I have reproduced the relevant validation block below (in accordance with the PHP License of course).  During the positive validation path, ```iv``` gets copied to ```iv_s``` using memcpy.  Down the negative path, ```iv_s``` is unmodified and so retains its initialisation value of ```NULL```.  A few lines below ```iv_s``` then gets passed through, unmodified, into the mcrypt library.
+``` php_mcrypt_do_crypt ``` is where the validation of the IV happens. If you like reading C code, I have reproduced the relevant validation block below (in accordance with the [PHP License](https://github.com/php/php-src/blob/PHP-5.5.38/LICENSE) of course).  During the positive validation path, ```iv``` gets copied to ```iv_s``` using memcpy.  Down the negative path, ```iv_s``` is unmodified and so retains its initialisation value of ```NULL```.  A few lines below ```iv_s``` then gets passed through, unmodified, into the mcrypt library.
 
 ```c
 /* IV is required */
